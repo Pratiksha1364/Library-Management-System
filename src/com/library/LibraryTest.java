@@ -59,4 +59,105 @@ public class LibraryTest {
         }
     }
 
+    @Test
+    public void testBorrowBook() {
+        // Add the book to the library
+        Book book = new Book("103", "The Adventures Of Tom Sawyer", "Mark Twain", 2022);
+        library.addBook(book);
+
+        // Ensure the book is available before borrowing
+        assertTrue(library.isBookAvailable("103"), "The book should be available before borrowing.");
+
+        // Borrow the book
+        library.borrowBook("103");
+
+        // Assert that the book is no longer available in the library
+        assertFalse(library.isBookAvailable("103"), "The book should not be available after being borrowed.");
+    }
+
+    @Test
+    public void testBookAlreadyBorrowed() {
+        // Add a book to the library
+        Book book = new Book("105", "The Catcher in the Rye", "J.D. Salinger", 1951);
+        library.addBook(book);
+
+        // Borrow the book for the first time
+        library.borrowBook("105");
+
+        // Try to borrow the same book again
+        try {
+            library.borrowBook("105"); // This should throw an IllegalArgumentException
+            fail("Expected an IllegalArgumentException to be thrown");
+        } catch (IllegalArgumentException e) {
+            // Verify that the exception message indicates the book is already borrowed
+            assertEquals("Already Borrowed", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testReturnBook() {
+        // Set up the library and add a book with ISBN "106"
+        Book book = new Book("106", "1984", "George Orwell", 1949);
+        library.addBook(book);
+
+        // Borrow the book using the correct ISBN
+        library.borrowBook("106");
+
+        // Now return the book using the correct ISBN
+        library.returnBook("106");
+
+        // Verify that the book is available again using the correct ISBN
+        assertTrue(library.getAvailableBooks().stream().anyMatch(b -> b.getIsbn().equals("106")),
+                "The book should be available after returning.");
+    }
+
+    @Test
+    public void testReturnBookNotBorrowed() {
+        // Set up the library and add a book with ISBN "107"
+        Book book = new Book("107", "To Kill a Mockingbird", "Harper Lee", 1960);
+        library.addBook(book);
+
+        // Attempt to return the book without borrowing it first
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            library.returnBook("107");
+        });
+
+        // Verify the exception message
+        assertEquals("Book was not borrowed: 107", exception.getMessage());
+    }
+
+    @Test
+    public void testReturnBookNotAvailable() {
+        // Attempt to return a book with an ISBN that was never added to the library
+        String isbnNotInLibrary = "108";
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            library.returnBook(isbnNotInLibrary);
+        });
+
+        // Verify that the exception message is correct
+        assertEquals("Book was not borrowed: 108", exception.getMessage());
+    }
+
+    @Test
+    public void testBookAlreadyReturned() {
+        // Add a book to the library
+        Book book = new Book("109", "The Lord of the Rings", "J.R.R. Tolkien", 1954);
+        library.addBook(book);
+
+        // Borrow the book
+        library.borrowBook("109");
+
+        // Return the book
+        library.returnBook("109");
+
+        // Attempt to return the same book again, which should fail
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            library.returnBook("109");
+        });
+
+        // Verify that the exception message is correct
+        assertEquals("Book was not borrowed: 109", exception.getMessage());
+    }
+
 }

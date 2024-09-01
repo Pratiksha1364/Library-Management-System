@@ -42,6 +42,15 @@ public class Library {
         return false;
     }
 
+    public void returnBook(String isbn) {
+        // Check if the book was actually borrowed
+        if (!borrowedBooks.contains(isbn)) {
+            throw new IllegalArgumentException("Book was not borrowed: " + isbn);
+        }
+        // Remove the book from the borrowedBooks list to mark it as returned
+        borrowedBooks.remove(isbn);
+    }
+
     public List<Book> getAvailableBooks() {
         List<Book> availableBooks = new ArrayList<>();
         for (Book book : books) {
