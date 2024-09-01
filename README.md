@@ -14,21 +14,21 @@ A library management system that allows users to perform basic operations such a
 Getting Started
 Follow the instructions to get the project running on your local machine for development and testing.
 
-Prerequisites
+Prerequisites:
 java
 
 Installation
 Clone the repository:
 git clone https://github.com/Pratiksha1364/Library-Management-System/new/master
 
-Running the tests
+Running the tests:
 To ensure the reliability of the library management system, unit tests are provided. To run these tests:
 Junit test
 
-Built With
+Built With:
 Java - The runtime used
 Junit - Testing framework
 
-Author
+Author:
 Pratiksha Rajput - L.D. College Of Engineering
 
