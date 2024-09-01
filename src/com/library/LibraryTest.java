@@ -160,4 +160,23 @@ public class LibraryTest {
         assertEquals("Book was not borrowed: 109", exception.getMessage());
     }
 
+    @Test
+    public void testViewAvailableBooks() {
+        Book book1 = new Book("110", "Pride and Prejudice", "Jane Austen", 1813);
+        Book book2 = new Book("111", "Moby-Dick", "Herman Melville", 1851);
+        Book book3 = new Book("112", "War and Peace", "Leo Tolstoy", 1869);
+
+        library.addBook(book1);
+        library.addBook(book2);
+        library.addBook(book3);
+
+        library.borrowBook("110"); // Borrow one book
+
+        List<Book> availableBooks = library.getAvailableBooks();
+
+        assertEquals(2, availableBooks.size());
+        assertTrue(availableBooks.contains(book2));
+        assertTrue(availableBooks.contains(book3));
+        assertFalse(availableBooks.contains(book1)); // This book should not be in the available list
+    }
 }
