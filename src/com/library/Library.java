@@ -22,6 +22,26 @@ public class Library {
         books.add(book);
     }
 
+    public void borrowBook(String isbn) {
+        if (!isBookAvailable(isbn)) {
+            if (borrowedBooks.contains(isbn)) {
+                throw new IllegalArgumentException("Already Borrowed");
+            } else {
+                throw new IllegalArgumentException("Book is not available in library: " + isbn);
+            }
+        }
+        borrowedBooks.add(isbn);
+    }
+
+    public boolean isBookAvailable(String isbn) {
+        for (Book book : books) {
+            if (book.getIsbn().equals(isbn) && !borrowedBooks.contains(isbn)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public List<Book> getAvailableBooks() {
         List<Book> availableBooks = new ArrayList<>();
         for (Book book : books) {
